@@ -8,9 +8,16 @@ class Login extends Component {
   render(){
     return (
       <form 
-        onSubmit={() => {
+        onSubmit={(e) => {
           console.log('submitted');
-          this.props.logIn
+          const formNode = document.querySelector('form');
+          const formData = {
+            username: formNode.username.value,
+            password: formNode.password.value,
+          };
+          console.log(formData)
+          this.props.logIn(formData)
+          e.preventDefault();
         }} 
         className="login">
         <label for="username">Username</label>

@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
 //login
 app.post('/login', (req, res) => {
   //get the data from the form
+  console.log(req)
   const data = req.body;
   console.log(data)
   //return ok with data

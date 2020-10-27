@@ -23,17 +23,23 @@ const usersReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case types.LOG_IN:
+      console.log('running log in reducer')
       //store data username and pw
       const data = action.payload;
+      console.log(data);
       //invoke fetch ??
       fetch('/login', {
         method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(data)
-      }).then(response => {
-        return response.json();
-      }).then(data => {
+      }).then(response => 
+        response.json()
+      ).then(response => {
         console.log('log in successful');
-        console.log(data);
+        console.log(response);
         
       })
       
