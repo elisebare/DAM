@@ -20,7 +20,16 @@ app.get('/', (req, res) => {
     __dirname,
     '../client/index.html'
   ))
-})
+});
+
+//login
+app.post('/login', (req, res) => {
+  //get the data from the form
+  const data = req.body;
+  console.log(data)
+  //return ok with data
+  res.status(200).json(data);
+});
 
 //not found 404
 app.use((req, res) => {
@@ -46,3 +55,4 @@ app.listen(PORT, () => {
 
 //export app
 module.exports = app;
+
