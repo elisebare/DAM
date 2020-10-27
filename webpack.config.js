@@ -11,7 +11,7 @@ module.exports = {
   devServer: {
     publicPath: '/build/',
     proxy: {
-      '/api': {
+      '/': {
         target: 'http://localhost:3000',
         /**bypass used for development if you're only
          * interested in retrievals -- from Greg demo
@@ -30,7 +30,7 @@ module.exports = {
       //list of rules include objects with test and use properties
       //babel processes jsx files
       {
-        test: /\.jsx?/,
+        test: /.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',

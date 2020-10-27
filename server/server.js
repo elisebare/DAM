@@ -5,7 +5,7 @@ const app = express();
 
 const PORT = 3000;
 
-//request parsing
+//parse requests with json (express global middleware)
 app.use(express.json());
 
 //static rendering
@@ -39,8 +39,10 @@ app.use((err, req, res, next) => {
   return res.status(errObj.status).json(errorObj.message);
 })
 
+//set up server by listening at port
 app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`)
 });
 
+//export app
 module.exports = app;
