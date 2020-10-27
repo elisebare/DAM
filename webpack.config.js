@@ -1,3 +1,6 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
+
 module.exports = {
   entry: './client/index.js', 
   output: {
@@ -8,7 +11,16 @@ module.exports = {
   devServer: {
     publicPath: '/build/',
     proxy: {
-      '/api': 'http:localhost:3000'
+      '/api': {
+        target: 'http://localhost:3000',
+        /**bypass used for development if you're only
+         * interested in retrievals -- from Greg demo
+         * 
+         * bypass: function(req, res, proxyOptions) {
+          * if (req.method !== 'GET') return false;
+          * }
+        */
+      }
     }
   },
   //global NODE_ENV set in scripts in package.json
@@ -18,11 +30,12 @@ module.exports = {
       //list of rules include objects with test and use properties
       //babel processes jsx files
       {
-        test: /.\js$/,
-        exclude: /(node_modules)/,
+        test: /\.jsx?/,
+        exclude: /node_modules/,
         use: {
-          loader: babel-loader,
+          loader: 'babel-loader',
           options: {
+            //preset-env is overall environment, passing react narrows down scope of environment for transpilations
             presets: ['@babel/preset-env', '@babel/preset-react']
           }
         }
@@ -31,11 +44,11 @@ module.exports = {
       {
         test: /\.s[ac]ss$/i,
         use: [
-          // Creates `style` nodes from JS strings
+          // Creates `style` nodes from JS strings (third)
           'style-loader',
-          // Translates CSS into CommonJS
+          // Translates CSS into CommonJS (second)
           'css-loader',
-          // Compiles Sass to CSS
+          // Compiles Sass to CSS (first)
           'sass-loader',
         ],
       },
@@ -45,5 +58,8 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ]
-  }
+  },
+  plugins: [
+    new MiniCssExtractPlugin(),
+  ]
 }
