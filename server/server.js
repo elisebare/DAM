@@ -1,12 +1,13 @@
 const path = require('path');
 const express = require('express');
+const bodyParser = require("body-parser"); 
 
 const app = express();
 
 const PORT = 3000;
 
 //parse requests with json (express global middleware)
-app.use(express.json());
+app.use(bodyParser.json());
 
 //static rendering
 app.use('/assets', express.static(path.resolve(
@@ -20,6 +21,15 @@ app.get('/', (req, res) => {
     __dirname,
     '../client/index.html'
   ))
+});
+
+//login
+app.post('/login', (req, res) => {
+  //get the data from the form
+  const data = req.body;
+  console.log(data)
+  //return ok with data
+  res.status(200).json(data);
 })
 
 //not found 404

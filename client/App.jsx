@@ -1,12 +1,15 @@
 import React, { Component } from "react";
+import {render} from 'react-dom';
+import Accounts from './containers/Accounts.jsx';
 
 class App extends Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     return (
-      <p>This is the app rendering</p>
+      <Accounts />
     );
   }
 }

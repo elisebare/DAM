@@ -5,12 +5,14 @@
  import React from "react";
  import { render } from "react-dom";
  //only if using redux
-//  import { Provider } from "react-redux";
+ import { Provider } from "react-redux";
  import App from "./App.jsx";
-//  import store from "./store"
+ import store from "./store"
 
 render(
-  <App />,
-  //location
+  <Provider store = {store}>
+    <App />
+  </Provider>,
+  //location in html
   document.getElementById("contents")
 );
