@@ -14,9 +14,8 @@ import * as types from "../constants/actionTypes";
 const initialState = {
   task: 'login',
   username: '',
-  password: '',
   verified: false,
-  access: null,
+  level: null,
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -28,10 +27,18 @@ const usersReducer = (state = initialState, action) => {
       //store data username and pw
       data = action.payload;
       console.log(data);
-      //invoke fetch ??
-      return state;
+      
       //set user to logged in
       //set access to access
+      //set username
+      //set task to logout so logout component will render
+      return {
+        ...state,
+        verified: true,
+        username: data.username,
+        level: data.level,
+        task: 'logout'
+      }
     case types.CREATE_USER:
       console.log('running create user in reducers');
       //store payload: data

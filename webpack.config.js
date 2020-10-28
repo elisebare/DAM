@@ -13,13 +13,6 @@ module.exports = {
     proxy: {
       '/**': {
         target: 'http://localhost:3000',
-        /**bypass used for development if you're only
-         * interested in retrievals -- from Greg demo
-         * 
-         * bypass: function(req, res, proxyOptions) {
-          * if (req.method !== 'GET') return false;
-          * }
-        */
       }
     }
   },

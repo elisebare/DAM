@@ -19,7 +19,9 @@ router.post('/', loginController.verifyUser,
   loginController.checkrole, 
   loginController.passJWT,
   (req, res) => {
-    return res.status(200).json({level: res.locals.level, token: res.locals.token})
+    console.log('about to send jwt')
+    console.log({username: res.locals.user.username, level: res.locals.level, token: res.locals.token})
+    return res.status(200).json({username: res.locals.user.username, level: res.locals.level, token: res.locals.token})
   }
   
 );
@@ -32,8 +34,10 @@ router.post('/', loginController.verifyUser,
 router.post('/new', loginController.createUser,
   loginController.checkrole, 
   loginController.passJWT,
-  (req, res, next) => {
-    res.status(200).send('user created yay')
+  (req, res) => {
+    console.log('about to send jwt')
+    console.log({username: res.locals.user.username, level: res.locals.level, token: res.locals.token})
+    return res.status(200).json({username: res.locals.user.username, level: res.locals.level, token: res.locals.token})
   }
 )
 

@@ -1,8 +1,8 @@
 /**
  * ************************************
  *
- * @module  AccountsContainer
- * @author
+ * @module  AccountsContainer -- will contain login, logout, and signup stuff
+ * @author elisebare
  * @date
  * @description stateful component that renders logins, logouts, and signups
  *
@@ -12,10 +12,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../actions/actions.js";
+
+//presentation components for accounts container
 import Login from "../components/Login.jsx";
 import CreateAccount from "../components/CreateAccount.jsx";
+import Signout from "../components/Signout.jsx";
+
+//thunk middleware -- async functions with fetch request to server
 import {fetchLogin} from "../actions/actions.js";
 import {fetchSignup} from "../actions/actions.js";
+import {fetchSignout} from "../actions/actions.js"
 
 
 const mapStateToProps = (state) => {
@@ -24,18 +30,16 @@ const mapStateToProps = (state) => {
     // add pertinent state here
     task: state.users.task,
     username: state.users.username,
-    password: state.users.password,
     verified: state.users.verified,
-    access: state.users.access,
+    level: state.users.level,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  logIn: (data) => dispatch(actions.logIn(data)),
   changeTask: (task) => dispatch(actions.changeTask(task)),
-  createUser: (data) => dispatch(actions.createUser(data)),
   fetchLogin: (data) => dispatch(fetchLogin(data)),
-  fetchSignup: (data) => dispatch(fetchSignup(data))
+  fetchSignup: (data) => dispatch(fetchSignup(data)),
+  fetchSignout: (data) => dispatch(fetchSignout(data))
 });
 
 class Accounts extends Component {
@@ -48,18 +52,17 @@ class Accounts extends Component {
     let form;
     let newTask;
     if (this.props.task === 'login'){
-      form = <Login {...this.props}/>;
+      form = <Login {...this.props} newTask='signup'/>;
       newTask = 'signup';
+    } else if (this.props.task === 'logout'){
+      form = <Signout {...this.props} />
     } else {
-      form = <CreateAccount {...this.props}/>;
+      form = <CreateAccount {...this.props} newTask='login'/>;
       newTask = 'login';
     }
     return (
       <div>
         {form}
-        <button onClick={() => {this.props.changeTask(newTask)}}>
-          {newTask}
-        </button>
       </div>
       
     );

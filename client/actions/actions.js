@@ -26,20 +26,20 @@ export const fetchSignup = (data) => dispatch => {
     },
     body: JSON.stringify(data)
   }).then(response => {
-    response.json();
-  }).then(()=> {
+    return response.json();
+  }).then((response)=> {
     console.log('sign up successful');
     console.log(response);
     /**data should be a JWT
      * {
-     *    user: {},
+     *    username: '',
+     *    level: number,
      *    token: 'aaaa.bbbb.bbbb'
      * }
-     * store it in locals
+     * store token in locals and username/level in STATE
     */
-    // localStorage.setItem("token", data.token);
-    // dispatch(logIn(data.user));
-    dispatch(logIn({"fake": "data"}))
+    localStorage.setItem("token", response.token);
+    dispatch(logIn({level: response.level, username: response.username}))
   })
 }
 
@@ -54,18 +54,23 @@ export const fetchLogin = (data) => dispatch => {
     body: JSON.stringify(data)
   }).then(response => 
     response.json()
-  ).then(response => {
+  ).then((response)=> {
     console.log('log in successful');
     console.log(response);
     /**data should be a JWT
      * {
-     *    user: {},
+     *    username: '',
+     *    level: number,
      *    token: 'aaaa.bbbb.bbbb'
      * }
-     * store it in locals
+     * store token in locals and username/level in STATE
     */
-    // localStorage.setItem("token", data.token);
-    // dispatch(logIn(data.user));
-    dispatch(logIn({"fake": "data"}))
+    localStorage.setItem("token", response.token);
+    dispatch(logIn({level: response.level, username: response.username}))
   })
+}
+
+export const fetchSignout = () => dispatch => {
+  console.log('running fetch Signout')
+  localStorage.removeItem("token");
 }

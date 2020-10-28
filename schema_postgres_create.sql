@@ -45,9 +45,9 @@ VALUES  (DEFAULT, 'admin1@gmail.com', 1),
 -- PASSWORD IS plaintext testing1
 
 INSERT INTO accounts 
-VALUES  (DEFAULT, 'admin1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2CrMeFobWW', 'admin1', DEFAULT),
-        (DEFAULT, 'submitter1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2CrMeFobWW', 'submitter1', DEFAULT),
-        (DEFAULT, 'public1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2CrMeFobWW', 'public1', DEFAULT);
+VALUES  (DEFAULT, 'admin1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2CrMeFobWW', 'admin1@gmail.com', DEFAULT),
+        (DEFAULT, 'submitter1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2CrMeFobWW', 'submitter1@gmail.com', DEFAULT),
+        (DEFAULT, 'public1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2CrMeFobWW', 'public1@gmail.com', DEFAULT);
 
 
 -- CREATE TABLE accounts_access(

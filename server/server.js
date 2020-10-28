@@ -11,10 +11,10 @@ const PORT = 3000;
 //parse requests with json (express global middleware)
 app.use(bodyParser.json());
 
-//static rendering
-app.use('/assets', express.static(path.resolve(
+//static rendering for css/assets?
+app.use('/static', express.static(path.resolve(
   __dirname,
-  '../client/assets'
+  '../client/static'
 )));
 
 //home page

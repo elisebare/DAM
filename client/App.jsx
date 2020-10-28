@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {render} from 'react-dom';
-import Accounts from './containers/Accounts.jsx';
+import Main from './containers/Main.jsx'
 
 class App extends Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class App extends Component {
 
   render() {
     return (
-      <Accounts />
+      <Main />
     );
   }
 }
