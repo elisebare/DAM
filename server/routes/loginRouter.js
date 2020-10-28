@@ -6,19 +6,18 @@ const router = express.Router();
 const loginController = require('../controllers/loginController.js')
 
 //when user logs in, they send a post request
-router.post('/', loginController.verifyUser, 
-  loginController.checkpw, 
-  loginController.passJWT,
-  //login controller sequence -->
-  //verify user --> queries db, checks pw --> if err, redirect to signup
+//login controller sequence -->
+  //verify user --> queries db, checks pw --> if err, redirect to signup?
   //set JWT for response
   //get access --> query join table for the access code and description
-  //ssid controller --> add ssid to cookies using cookie session https://www.npmjs.com/package/cookie-session
-  (req, res, next) => {
-  res.status(200).json("hi");
-});
+  //chose NOT to implement session ssid controller --> add ssid to cookies using cookie session https://www.npmjs.com/package/cookie-session
+router.post('/', loginController.verifyUser, 
+  loginController.checkrole, 
+  loginController.passJWT,
+  
+);
 
-//when user is created, put request sent
+//when user is created, post request sent to login/new
 router.post('/new', loginController.createUser,
   //middleware sequence --> 
   //unique username? --> queries db for username --> if err redirect to signup w/ error message

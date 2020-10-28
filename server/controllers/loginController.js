@@ -1,5 +1,6 @@
 const damModel = require('../models/damModel');
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const loginController = {};
 
 //login controller sequence -->
@@ -40,13 +41,17 @@ loginController.verifyUser = (req, res, next) => {
 
 }
 
-loginController.checkpw = (req, res, next) => {
+loginController.checkrole = (req, res, next) => {
  
 
   return next();
 }
 
 loginController.passJWT = (req, res, next) => {
+  //sign a jwt
+  const secret = "ssshhhhhhh!!!!! testing in progress!"
+  res.locals.token = jwt.sign({user: 'elise', role: 'socool'}, secret, {expiresIn: 120});
+  console.log(res.locals.token)
   return next();
 }
 

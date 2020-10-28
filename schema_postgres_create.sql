@@ -3,7 +3,10 @@
 -- Re-add table
 -- run psql -d <URL> -f <path>
 
-DROP TABLE accounts;
+DROP TABLE IF EXISTS accounts;
+
+DROP TABLE IF EXISTS approved;
+DROP TABLE IF EXISTS roles;
 
 CREATE TABLE accounts(
   user_id serial PRIMARY KEY,
@@ -14,10 +17,33 @@ CREATE TABLE accounts(
   last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 
-CREATE TABLE access (
+CREATE TABLE roles (
   access_id serial PRIMARY KEY,
-  description VARCHAR ( 50 ) NOT NULL
+  level VARCHAR ( 50 ) NOT NULL
 );
+
+CREATE TABLE approved (
+  id serial PRIMARY KEY,
+  -- the role id comes from roles table, access id
+  email VARCHAR (100 ) UNIQUE NOT NULL,
+  access_id INT NOT NULL,
+  FOREIGN KEY(access_id) 
+    REFERENCES roles(access_id)
+);
+
+INSERT INTO roles
+VALUES  (DEFAULT, 'admin'),
+        (DEFAULT, 'submitter'),
+        (DEFAULT, 'public');
+
+INSERT INTO approved 
+VALUES  (DEFAULT, 'admin1@gmail.com', 1),
+        (DEFAULT, 'admin2@gmail.com', 1),
+        (DEFAULT, 'submitter1@gmail.com', 2),
+        (DEFAULT, 'public1@gmail.com', 3);
+
+
+
 
 -- CREATE TABLE accounts_access(
 --   user_id INT NOT NULL,
