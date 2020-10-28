@@ -9,14 +9,18 @@
  * ************************************
  */
 
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import reducers from './reducers/index';
 
 // we are adding composeWithDevTools here to get easy access to the Redux dev tools
+//we are adding thunk and applyMiddleware for async functions 
+//see fetch ( actions.js and login/create account components for uses)
 const store = createStore(
   reducers,
-  composeWithDevTools()
+  applyMiddleware(thunk)
+  // composeWithDevTools()
 );
 
 export default store;

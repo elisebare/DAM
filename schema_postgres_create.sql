@@ -1,3 +1,8 @@
+-- To update schema
+-- Drop table
+-- Re-add table
+-- run psql -d <URL> -f <path>
+
 DROP TABLE accounts;
 
 CREATE TABLE accounts(

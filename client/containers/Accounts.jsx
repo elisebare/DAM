@@ -12,8 +12,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../actions/actions.js";
-import Login from "../components/Login.jsx"
-import CreateAccount from "../components/CreateAccount.jsx"
+import Login from "../components/Login.jsx";
+import CreateAccount from "../components/CreateAccount.jsx";
+import {fetchLogin} from "../actions/actions.js";
+import {fetchSignup} from "../actions/actions.js";
 
 
 const mapStateToProps = (state) => {
@@ -31,7 +33,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   logIn: (data) => dispatch(actions.logIn(data)),
   changeTask: (task) => dispatch(actions.changeTask(task)),
-  createUser: (data) => dispatch(actions.createUser(data))
+  createUser: (data) => dispatch(actions.createUser(data)),
+  fetchLogin: (data) => dispatch(fetchLogin(data)),
+  fetchSignup: (data) => dispatch(fetchSignup(data))
 });
 
 class Accounts extends Component {

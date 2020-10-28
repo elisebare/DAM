@@ -5,10 +5,13 @@ class Login extends Component {
   constructor(props){
     super(props)
   }
+
+
   render(){
     return (
       <form 
         onSubmit={(e) => {
+          e.preventDefault();
           console.log('submitted');
           const formNode = document.querySelector('form');
           const formData = {
@@ -16,13 +19,13 @@ class Login extends Component {
             password: formNode.password.value,
           };
           console.log(formData)
-          this.props.logIn(formData)
-          e.preventDefault();
+          this.props.fetchLogin(formData)
+          
         }} 
         className="login">
-        <label for="username">Username</label>
+        <label htmlFor="username">Username</label>
         <input type="text" name="username"></input>
-        <label for="password">Password</label>
+        <label htmlFor="password">Password</label>
         <input type="password" name="password"></input>
         <input type='submit' value='submit'></input>
       </form>

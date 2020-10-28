@@ -29,21 +29,7 @@ const usersReducer = (state = initialState, action) => {
       data = action.payload;
       console.log(data);
       //invoke fetch ??
-      fetch('/login', {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      }).then(response => 
-        response.json()
-      ).then(response => {
-        console.log('log in successful');
-        console.log(response);
-        
-      })
-      
+      return state;
       //set user to logged in
       //set access to access
     case types.CREATE_USER:
@@ -52,17 +38,7 @@ const usersReducer = (state = initialState, action) => {
       data = action.payload;
       console.log(data)
       //add user to db with fetch put request to server
-      fetch('/login/new', {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      }).then(response => {
-        console.log('create user successful');
-        console.log(response);
-      })
+      return state;
     case types.CHANGE_TASK:
       console.log('changing task')
       //payload is new task
