@@ -9,7 +9,7 @@ class CreateAccount extends Component {
     return (
       <form 
         onSubmit={(e) => {
-          e.preventDefault();
+          
           console.log('submitted');
           const formNode = document.querySelector('form');
           const formData = {
@@ -19,7 +19,7 @@ class CreateAccount extends Component {
           };
           console.log(formData);
           this.props.createUser(formData);
-          
+          e.preventDefault();
         }} 
         className="signup">
         <label for="username">Username</label>

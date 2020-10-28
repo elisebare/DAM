@@ -50,17 +50,16 @@ const usersReducer = (state = initialState, action) => {
       console.log('running create user in reducers');
       //store payload: data
       data = action.payload;
+      console.log(data)
       //add user to db with fetch put request to server
-      fetch('/login', {
-        method: 'put',
+      fetch('/login/new', {
+        method: 'post',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data)
-      }).then(response => 
-        response.json()
-      ).then(response => {
+      }).then(response => {
         console.log('create user successful');
         console.log(response);
       })

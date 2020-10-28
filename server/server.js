@@ -28,7 +28,6 @@ app.get('/', (req, res) => {
 //login
 app.use('/login', loginRouter)
 
-
 //not found 404
 app.use((req, res) => {
   res.status(404).send("The page you requested cannot be found")
@@ -42,7 +41,7 @@ app.use((err, req, res, next) => {
     message: {err: 'Internal server error'}
   };
   const errorObj = Object.assign({}, defaultErr, err);
-  console.log(errorObj.message);
+  console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });
 

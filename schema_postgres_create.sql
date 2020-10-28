@@ -1,10 +1,12 @@
+DROP TABLE accounts;
+
 CREATE TABLE accounts(
   user_id serial PRIMARY KEY,
   username VARCHAR ( 50 ) UNIQUE NOT NULL,
   password VARCHAR ( 255 ) NOT NULL, 
   email VARCHAR ( 255 ) UNIQUE NOT NULL,
-  created_on TIMESTAMP NOT NULL, 
-  last_login TIMESTAMP
+  created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+  last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 
 CREATE TABLE access (

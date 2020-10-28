@@ -3,3 +3,6 @@ node_modules
 
 #ignore any build folder files
 build
+
+#ignore environment variables
+.env
