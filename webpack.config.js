@@ -11,7 +11,7 @@ module.exports = {
   devServer: {
     publicPath: '/build/',
     proxy: {
-      '/': {
+      '/**': {
         target: 'http://localhost:3000',
         /**bypass used for development if you're only
          * interested in retrievals -- from Greg demo

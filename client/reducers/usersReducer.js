@@ -12,6 +12,7 @@
 import * as types from "../constants/actionTypes";
 
 const initialState = {
+  task: 'login',
   username: '',
   password: '',
   verified: false,
@@ -19,13 +20,13 @@ const initialState = {
 };
 
 const usersReducer = (state = initialState, action) => {
-  let marketList;
+  let data;
 
   switch (action.type) {
     case types.LOG_IN:
       console.log('running log in reducer')
       //store data username and pw
-      const data = action.payload;
+      data = action.payload;
       console.log(data);
       //invoke fetch ??
       fetch('/login', {
@@ -45,12 +46,31 @@ const usersReducer = (state = initialState, action) => {
       
       //set user to logged in
       //set access to access
-    case types.SET_USER:
-      //store payload: username
-      //add username to state
-    case types.SET_PASSWORD:
-      //store payload: password
-      //add password to state
+    case types.CREATE_USER:
+      console.log('running create user in reducers');
+      //store payload: data
+      data = action.payload;
+      //add user to db with fetch put request to server
+      fetch('/login', {
+        method: 'put',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      }).then(response => 
+        response.json()
+      ).then(response => {
+        console.log('create user successful');
+        console.log(response);
+      })
+    case types.CHANGE_TASK:
+      console.log('changing task')
+      //payload is new task
+      return {
+        ...state,
+        task: action.payload
+      }
     default:
       return state;
   }

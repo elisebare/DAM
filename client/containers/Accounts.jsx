@@ -13,12 +13,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../actions/actions.js";
 import Login from "../components/Login.jsx"
+import CreateAccount from "../components/CreateAccount.jsx"
 
 
 const mapStateToProps = (state) => {
   
   return {
     // add pertinent state here
+    task: state.users.task,
     username: state.users.username,
     password: state.users.password,
     verified: state.users.verified,
@@ -28,8 +30,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   logIn: (data) => dispatch(actions.logIn(data)),
-  setPassword: (password) => dispatch(actions.setPassword(password)),
-  setUser: (username) => dispatch(actions.setUser(username))
+  changeTask: (task) => dispatch(actions.changeTask(task)),
+  createUser: (data) => dispatch(actions.createUser(data))
 });
 
 class Accounts extends Component {
@@ -39,8 +41,23 @@ class Accounts extends Component {
   
 
   render() {
+    let form;
+    let newTask;
+    if (this.props.task === 'login'){
+      form = <Login {...this.props}/>;
+      newTask = 'signup';
+    } else {
+      form = <CreateAccount {...this.props}/>;
+      newTask = 'login';
+    }
     return (
-      <Login {...this.props}/>
+      <div>
+        {form}
+        <button onClick={() => {this.props.changeTask(newTask)}}>
+          {newTask}
+        </button>
+      </div>
+      
     );
   }
 }

@@ -1,6 +1,8 @@
 const path = require('path');
 const express = require('express');
-const bodyParser = require("body-parser"); 
+const bodyParser = require('body-parser'); 
+const loginRouter = require('./routes/loginRouter.js');
+
 
 const app = express();
 
@@ -24,14 +26,8 @@ app.get('/', (req, res) => {
 });
 
 //login
-app.post('/login', (req, res) => {
-  //get the data from the form
-  console.log(req)
-  const data = req.body;
-  console.log(data)
-  //return ok with data
-  res.status(200).json(data);
-});
+app.use('/login', loginRouter)
+
 
 //not found 404
 app.use((req, res) => {
@@ -47,7 +43,7 @@ app.use((err, req, res, next) => {
   };
   const errorObj = Object.assign({}, defaultErr, err);
   console.log(errorObj.message);
-  return res.status(errObj.status).json(errorObj.message);
+  return res.status(errorObj.status).json(errorObj.message);
 });
 
 //set up server by listening at port

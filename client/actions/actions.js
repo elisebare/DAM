@@ -7,12 +7,12 @@ export const logIn = (data) => ({
   payload: data,
 });
 
-export const setPassword = (password) => ({
-  type: types.SET_PASSWORD,
-  payload: password,
+export const changeTask = (task) => ({
+  type: types.CHANGE_TASK,
+  payload: task,
 });
 
-export const setUser = (username) => ({
-  type: types.SET_USER,
-  payload: username,
+export const createUser = (data) => ({
+  type: types.CREATE_USER,
+  payload: data,
 });
