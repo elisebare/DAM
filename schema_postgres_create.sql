@@ -13,8 +13,8 @@ CREATE TABLE accounts(
   username VARCHAR ( 50 ) UNIQUE NOT NULL,
   password VARCHAR ( 255 ) NOT NULL, 
   email VARCHAR ( 255 ) UNIQUE NOT NULL,
-  created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
-  last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+  created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
+  -- last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 
 CREATE TABLE roles (
@@ -42,7 +42,12 @@ VALUES  (DEFAULT, 'admin1@gmail.com', 1),
         (DEFAULT, 'submitter1@gmail.com', 2),
         (DEFAULT, 'public1@gmail.com', 3);
 
+-- PASSWORD IS plaintext testing1
 
+INSERT INTO accounts 
+VALUES  (DEFAULT, 'admin1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2CrMeFobWW', 'admin1', DEFAULT),
+        (DEFAULT, 'submitter1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2CrMeFobWW', 'submitter1', DEFAULT),
+        (DEFAULT, 'public1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2CrMeFobWW', 'public1', DEFAULT);
 
 
 -- CREATE TABLE accounts_access(

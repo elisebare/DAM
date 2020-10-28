@@ -10,18 +10,28 @@ const loginController = require('../controllers/loginController.js')
   //verify user --> queries db, checks pw --> if err, redirect to signup?
   //set JWT for response
   //get access --> query join table for the access code and description
+
+  //send level && token
+
   //chose NOT to implement session ssid controller --> add ssid to cookies using cookie session https://www.npmjs.com/package/cookie-session
 router.post('/', loginController.verifyUser, 
+  loginController.checkpw,
   loginController.checkrole, 
   loginController.passJWT,
+  (req, res) => {
+    return res.status(200).json({level: res.locals.level, token: res.locals.token})
+  }
   
 );
 
 //when user is created, post request sent to login/new
+//create the user --> add user data to res.locals.user
+//check the role
+//pass the jwt
+//if failed - redirect to home
 router.post('/new', loginController.createUser,
-  //middleware sequence --> 
-  //unique username? --> queries db for username --> if err redirect to signup w/ error message
-  //otherwise insert data into accounts table
+  loginController.checkrole, 
+  loginController.passJWT,
   (req, res, next) => {
     res.status(200).send('user created yay')
   }

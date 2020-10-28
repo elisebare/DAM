@@ -20,17 +20,9 @@ loginController.verifyUser = (req, res, next) => {
       return res.redirect('/')
     } else {
       console.log('user found')
-      //check password
-      bcrypt.compare(req.body.password, data.rows[0].password)
-      .then((bool) => {
-        if (bool === true) {
-          console.log('correct pw');
-          return next();
-        } else {
-          console.log('incorrect pw')
-          return res.redirect('/');
-        }
-      }) 
+      //assign the data to res.locals for use in future middleware
+      res.locals.user = data.rows[0]
+      
     }
   })
   .catch((err)=> {
@@ -41,8 +33,66 @@ loginController.verifyUser = (req, res, next) => {
 
 }
 
+loginController.checkpw = (req, res, next) => {
+  //store pw
+  const storedPw = res.locals.user.password
+  //check password
+  bcrypt.compare(req.body.password, storedPw)
+  .then((bool) => {
+    if (bool === true) {
+      console.log('correct pw');
+      return next();
+    } else {
+      console.log('incorrect pw')
+      return res.redirect('/');
+    }
+  })
+  .catch((err)=> {
+    return next({
+      log: `check pw controller, bcrypt compare threw error, ${err}`
+    })
+  }) 
+}
+
+
 loginController.checkrole = (req, res, next) => {
- 
+  //query the approved table for email  -- need to do a join with the accounts to get the correct email based on username 
+  //add the role to the res.locals.user object --> this will get added to the jwt as well
+  const query = 'SELECT r.access_id, r.level FROM roles r LEFT JOIN approved a on r.access_id = a.access_id WHERE a.email = $1'
+  const params = [res.locals.user.email]
+  damModel.query(text, params)
+  .then((data)=> {
+    console.log('recieved data in check role')
+    
+    if (data.rowCount === 0) {
+      console.log('no permissions')
+      //set permissions to public
+      //query roles table for id for public
+      const query = 'SELECT access_id FROM roles WHERE level="public"'
+      const params = [];
+      damModel.query(text, params, (err, role) => {
+        if (err) {
+          console.log('no role found')
+          res.locals.level = null;
+          return next()
+        } else {
+          //there was a result, grab the level
+          res.locals.level = role.rows[0].level;
+          return next()
+        }
+      })
+    } else {
+      console.log('level found')
+      //assign the data to res.locals for use in future middleware
+      res.locals.level = data.rows[0].level
+      return next()
+    }
+  })
+  .catch((err)=> {
+    return next({
+      log: `check roles error: no return from query error, ${err}`
+    })
+  })
 
   return next();
 }
@@ -50,7 +100,7 @@ loginController.checkrole = (req, res, next) => {
 loginController.passJWT = (req, res, next) => {
   //sign a jwt
   const secret = "ssshhhhhhh!!!!! testing in progress!"
-  res.locals.token = jwt.sign({user: 'elise', role: 'socool'}, secret, {expiresIn: 120});
+  res.locals.token = jwt.sign({user: res.locals.user.username, level: res.locals.level}, secret, {expiresIn: 120});
   console.log(res.locals.token)
   return next();
 }
@@ -60,7 +110,7 @@ loginController.createUser = (req, res, next) => {
   //get data from form
   const data = req.body;
   //create text for query
-  const text = 'INSERT INTO accounts (user_id, username, password, email, created_on) VALUES (DEFAULT, $1, $2, $3, DEFAULT)'
+  const text = 'INSERT INTO accounts (user_id, username, password, email, created_on) VALUES (DEFAULT, $1, $2, $3, DEFAULT) RETURNING *'
   /**For reference, the schema is below
    * user_id serial PRIMARY KEY,
    * username VARCHAR ( 50 ) UNIQUE NOT NULL, 
@@ -79,12 +129,12 @@ loginController.createUser = (req, res, next) => {
     damModel.query(text, values)
     .then((queryResponse) => {
       console.log(queryResponse);
+      res.locals.user = queryResponse.rows[0]
       return next();
     }).catch((err) => {
-      console.log(err)
-      return next({
-        log: `the create user failed in loginController.js`
-      })
+      //failed to create new user -- redirect to login--don't crash app
+      console.log('failed to create new user')
+      res.redirect('/')
     });
   })
 }
