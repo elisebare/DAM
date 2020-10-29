@@ -4,9 +4,17 @@
 -- run psql -d <URL> -f <path>
 
 DROP TABLE IF EXISTS accounts;
-
 DROP TABLE IF EXISTS approved;
 DROP TABLE IF EXISTS roles;
+
+DROP TABLE IF EXISTS keywords;
+
+
+DROP TABLE IF EXISTS type_doc;
+DROP TABLE IF EXISTS type;
+DROP TABLE IF EXISTS relations;
+DROP TABLE IF EXISTS relations_types;
+DROP TABLE IF EXISTS metadata;
 
 CREATE TABLE accounts(
   user_id serial PRIMARY KEY,
@@ -50,18 +58,58 @@ VALUES  (DEFAULT, 'admin1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2
         (DEFAULT, 'public1', '$2b$05$.kkmLUHNopyUZLrmTvjdr.Cdlzor3TsyhUCitZkLr8g2CrMeFobWW', 'public1@gmail.com', DEFAULT);
 
 
--- CREATE TABLE accounts_access(
---   user_id INT NOT NULL,
---   access_id INT NOT NULL,
---   PRIMARY KEY (user_id, access_id),
---   FOREIGN KEY (access_id),
---     REFERENCES access (access_id)
---   FOREIGN KEY (user_id),
---     REFERENCES accounts (user_id)
--- );
+-- metadata table
+CREATE TABLE metadata (
+  document_id serial PRIMARY KEY,
+  title VARCHAR (255) NOT NULL,
+  subject VARCHAR (255) NOT NULL,
+  description VARCHAR (1000) NOT NULL,
+  source VARCHAR (255) NOT NULL
+);
 
--- CREATE TABLE metadata (
---   _id serial NOT NULL PRIMARY KEY,
---   title VARCHAR ( max ) UNIQUE NOT NULL,
---   creator VARCHAR ( max )
--- )
+-- because each keyword will need to be look up able, they will be added separately to a join table that only contains keyword and document_id (foreign key)
+CREATE TABLE keywords (
+  id serial PRIMARY KEY,
+  keyword VARCHAR (255) NOT NULL,
+  document_id INT NOT NULL,
+  FOREIGN KEY(document_id) 
+    REFERENCES metadata(document_id)
+);
+
+-- types are predefined by Dublin Core (https://www.dublincore.org/specifications/dublin-core/dcmi-type-vocabulary/)
+-- this table will have descriptions of each type w/ a type id
+CREATE TABLE type (
+  doc_type_id serial PRIMARY KEY, 
+  type VARCHAR (255) NOT NULL
+);
+
+-- this is a join table that will contain document id and type id
+CREATE TABLE type_doc (
+  id serial PRIMARY KEY, 
+  document_id INT NOT NULL,
+  FOREIGN KEY (document_id)
+    REFERENCES metadata(document_id),
+  doc_type_id INT NOT NULL,
+  FOREIGN KEY (doc_type_id)
+    REFERENCES type(doc_type_id)
+);
+
+-- relations can be of different types, as described here by dublin core https://www.dublincore.org/specifications/dublin-core/usageguide/elements/
+-- there will be a relationship definitions table, along with a table listing relations with document_id and relationship_type_id
+CREATE TABLE relations_types (
+  relationship_id serial PRIMARY KEY,
+  description VARCHAR (255) NOT NULL
+);
+
+CREATE TABLE relations (
+  id serial PRIMARY KEY,
+  -- WHAT IS THE RELATIONSHIP REFERRING TO? EX// COLLECTION NAME
+  relation VARCHAR (255) NOT NULL,
+  -- TYPE OF RELATIONSHIP? EX// ISFORMATOF
+  relationship_id INT NOT NULL,
+  FOREIGN KEY (relationship_id)
+    REFERENCES relations_types(relationship_id),
+  document_id INT NOT NULL,
+  FOREIGN KEY (document_id)
+    REFERENCES metadata(document_id)
+);
