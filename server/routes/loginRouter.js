@@ -3,7 +3,8 @@ const damModel = require('../models/damModel.js');
 const express = require('express');
 const router = express.Router();
 //require login controller file
-const loginController = require('../controllers/loginController.js')
+const loginController = require('../controllers/loginController.js');
+
 
 //when user logs in, they send a post request
 //login controller sequence -->
@@ -41,8 +42,16 @@ router.post('/new', loginController.createUser,
   }
 )
 
-//when user logs out get request sent 
-router.get('/', )
+
+//verify login on load
+router.post('/check', loginController.verifyJWT, (req, res) => {
+  console.log('about to send jwt')
+  console.log(res.locals.username);
+  console.log(res.locals.level);
+  console.log(res.locals.token);
+  console.log({username: res.locals.username, level: res.locals.level, token: res.locals.token})
+  return res.status(200).json({username: res.locals.username, level: res.locals.level, token: res.locals.token})
+})
 
 router.use(
   (req, res) => {
