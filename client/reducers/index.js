@@ -10,6 +10,7 @@
  */
 
 import { combineReducers } from 'redux';
+import fileReducer from './fileReducer';
 
 // import all reducers here
 import usersReducer from './usersReducer';
@@ -19,6 +20,7 @@ import usersReducer from './usersReducer';
 const reducers = combineReducers({
   // if we had other reducers, they would go here
   users: usersReducer,
+  files: fileReducer,
 });
 
 // make the combined reducers available for import

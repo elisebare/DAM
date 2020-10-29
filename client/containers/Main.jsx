@@ -13,6 +13,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../actions/actions.js";
 import Accounts from './Accounts.jsx';
+import Uploads from './Uploads.jsx';
 
 const mapStateToProps = (state) => {
   
@@ -38,7 +39,7 @@ class Main extends Component {
       <div>
         <Accounts />
         <div>
-          <h4>Body goes here</h4>
+          <Uploads />
         </div>
       </div>
       

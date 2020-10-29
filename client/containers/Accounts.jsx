@@ -39,7 +39,8 @@ const mapDispatchToProps = (dispatch) => ({
   changeTask: (task) => dispatch(actions.changeTask(task)),
   fetchLogin: (data) => dispatch(fetchLogin(data)),
   fetchSignup: (data) => dispatch(fetchSignup(data)),
-  fetchSignout: (data) => dispatch(fetchSignout(data))
+  fetchSignout: (data) => dispatch(fetchSignout(data)),
+  fetchCheckLogin: () => dispatch(actions.fetchCheckLogin())
 });
 
 class Accounts extends Component {
@@ -47,6 +48,9 @@ class Accounts extends Component {
     super(props);
   }
   
+  componentDidMount(){
+    this.props.fetchCheckLogin()
+  }
 
   render() {
     let form;

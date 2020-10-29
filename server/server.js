@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser'); 
 const loginRouter = require('./routes/loginRouter.js');
-
+const dbRouter = require('./routes/dbRouter.js')
 
 const app = express();
 
@@ -27,6 +27,9 @@ app.get('/', (req, res) => {
 
 //login
 app.use('/login', loginRouter)
+
+//db calls
+app.use('/db', dbRouter)
 
 //not found 404
 app.use((req, res) => {

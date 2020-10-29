@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const loginController = {};
 
+const secret = "ssshhhhhhh!!!!! testing in progress!"
+
 //login controller sequence -->
 //verify user --> queries db, checks pw --> if err, redirect to signup
 loginController.verifyUser = (req, res, next) => {
@@ -89,8 +91,8 @@ loginController.checkrole = (req, res, next) => {
 
 loginController.passJWT = (req, res, next) => {
   //sign a jwt
-  const secret = "ssshhhhhhh!!!!! testing in progress!"
-  res.locals.token = jwt.sign({user: res.locals.user.username, level: res.locals.level}, secret, {expiresIn: 60});
+  
+  res.locals.token = jwt.sign({user: res.locals.user.username, level: res.locals.level}, secret, {expiresIn: "4h"});
   console.log('the token is', res.locals.token)
   return next();
 }
@@ -129,7 +131,35 @@ loginController.createUser = (req, res, next) => {
   })
 }
 
-//get access --> query join table for the access code and description
+//verify signature
+loginController.verifyJWT = (req, res, next) => {
+  //store token from req
+  const token = req.body.token;
+  console.log(token)
+  jwt.verify(token, secret, function(err, decoded)  {
+    if (err) {
+      console.log('error in verification of JWT', err);
+      //send status 100 -- continue -- no user to log in
+      return res.sendStatus(100);
+    }
+    console.log(typeof decoded)
+    console.log(decoded.level, decoded.user); 
+    res.locals.username = decoded.user;
+    res.locals.level = decoded.level;
+    res.locals.token = jwt.sign({user: res.locals.username, level: res.locals.level}, secret, {expiresIn: "4h"});
+    
+    return next();
+    
+  });
+  //if unsuccessful --do not go to next middleware, nothing to updated in state
+
+}
+
+// //decode to get username and level to send back
+// loginController.decodeJWT = (req, res, next) => {
+//   //if unsuccessful --do not go to next middleware, nothing to updated in state
+//   return res.sendStatus(200)
+// }
 //ssid controller --> add ssid to cookies using cookie session https://www.npmjs.com/package/cookie-session
 
 module.exports = loginController;

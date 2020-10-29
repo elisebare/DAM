@@ -53,6 +53,12 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         task: action.payload
       }
+    case types.LOG_OUT:
+    console.log('logging out')
+    //payload is new task
+    return {
+      ...initialState,
+    }
     default:
       return state;
   }
