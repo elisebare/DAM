@@ -6,6 +6,7 @@ const router = express.Router();
 
 //add data on post request
 router.post('/', function(req,res){
+  console.log('db post running')
   const files = req.body;
   console.log(files);
   res.send('sick!');
